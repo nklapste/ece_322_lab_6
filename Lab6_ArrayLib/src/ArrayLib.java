@@ -101,7 +101,7 @@ public class ArrayLib {
 		E[] removed = array.clone();
 		for(E e : remove){
 			int index = indexOf(array, e);
-			if(index > 0){
+			if(index >= 0){  // TODO: NOTE: Fixed removal of first indexed items
 				removed[index] = null;
 			}
 		}
