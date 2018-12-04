@@ -1,3 +1,5 @@
+package ca.klapstein.lab6.part1;
+
 import java.util.Arrays;
 
 public class Main {
