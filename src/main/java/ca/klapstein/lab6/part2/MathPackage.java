@@ -56,9 +56,12 @@ public class MathPackage {
 		double min = MathPackage.min(values);
 		double[] normalized = new double[values.length];
 		
-		for (int i=0;i<values.length;i++)
-			normalized[i] = (min - values[i])/(max-min);
-		
+		for (int i = 0; i< values.length; i++)
+			if (max-min != 0)
+				normalized[i] = (values[i] - min)/(max-min);  // TODO: fix
+			else
+				normalized[i] = 1.0 / values.length;
+
 		return normalized;
 	}
 	
@@ -96,9 +99,15 @@ public class MathPackage {
 	 * @return result of addition
 	 */
 	public static double[] arrayAdd(double[] d1, double[] d2){
-		double[] result = new double[d1.length];
-		for(int i=0; i<result.length; i++){
-			result[i] = d1[i] + d2[i];
+		double[] result = new double[(int) max(new double[]{d1.length, d2.length})]; // TODO: fixing java.lang.ArrayIndexOutOfBoundsException
+
+		for(int i=0; i<result.length; i++){  // TODO: fixing java.lang.ArrayIndexOutOfBoundsException
+			if (d1.length>i && d2.length>i)
+				result[i] = d1[i] + d2[i];
+			else if(d1.length>i)
+				result[i] = d1[i];
+			else if(d2.length>i)
+				result[i] = d2[i];
 		}
 		return result;
 	}
