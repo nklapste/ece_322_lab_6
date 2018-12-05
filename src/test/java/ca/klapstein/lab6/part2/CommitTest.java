@@ -54,7 +54,7 @@ class CommitTest {
     }
     private static Stream<Arguments> maxProvider() {
         return Stream.of(
-                Arguments.of(Double.MIN_VALUE, new double[]{}),
+                Arguments.of(Double.NaN, new double[]{}),
 
                 // NEW: fail assert
                 // fail assert
@@ -100,7 +100,7 @@ class CommitTest {
 
     private static Stream<Arguments> minProvider() {
         return Stream.of(
-                Arguments.of(Double.MAX_VALUE, new double[]{}),  // unexpectedish
+                Arguments.of(Double.NaN, new double[]{}),  // unexpectedish
 
                 Arguments.of(0, new double[]{0}),
                 Arguments.of(0, new double[]{0, 0}),
@@ -314,16 +314,19 @@ class CommitTest {
                 Arguments.of(new double[]{}, new double[]{}),
 
                 // NEW: all fail assert
-                Arguments.of(new double[]{0}, new double[]{0}),
+                Arguments.of(new double[]{-0.0}, new double[]{0}),
+                Arguments.of(new double[]{-0.0}, new double[]{0.0}),
+//                Arguments.of(new double[]{0.0}, new double[]{0}),  // stupid java int double standards
+                Arguments.of(new double[]{0.0}, new double[]{-0.0}),
                 Arguments.of(new double[]{-1}, new double[]{1}),
                 Arguments.of(new double[]{1}, new double[]{-1}),
 
-                Arguments.of(new double[]{0, -1}, new double[]{0, 1}),
-                Arguments.of(new double[]{-1, 0}, new double[]{1, 0}),
+                Arguments.of(new double[]{-0.0, -1}, new double[]{0, 1}),
+                Arguments.of(new double[]{-1, -0.0}, new double[]{1, 0}),
                 Arguments.of(new double[]{-1, -1}, new double[]{1, 1}),
 
-                Arguments.of(new double[]{0, 1}, new double[]{0, -1}),
-                Arguments.of(new double[]{1, 0}, new double[]{-1, 0}),
+                Arguments.of(new double[]{-0.0, 1}, new double[]{0, -1}),
+                Arguments.of(new double[]{1, -0.0}, new double[]{-1, 0}),
                 Arguments.of(new double[]{1, 1}, new double[]{-1, -1}),
 
                 Arguments.of(new double[]{-1.5}, new double[]{1.5}),
@@ -332,7 +335,7 @@ class CommitTest {
                 Arguments.of(new double[]{-0.5, -1.5}, new double[]{0.5, 1.5}),
                 Arguments.of(new double[]{0.5, 1.5}, new double[]{-0.5, -1.5}),
 
-                Arguments.of(new double[]{10, 100, 1000.05, 0, -10, -100, -1000.05}, new double[]{-10, -100, -1000.05, 0, 10, 100, 1000.05}),
+                Arguments.of(new double[]{10, 100, 1000.05, -0.0, -10, -100, -1000.05}, new double[]{-10, -100, -1000.05, 0, 10, 100, 1000.05}),
 
                 Arguments.of(new double[]{-1000000000, -1000000000}, new double[]{1000000000, 1000000000}),
                 Arguments.of(new double[]{1000000000, 1000000000}, new double[]{-1000000000, -1000000000})
@@ -357,7 +360,7 @@ class CommitTest {
                 // java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
 
-                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
+                Arguments.of(new double[]{-1}, new double[]{}, new double[]{1}),
                 // java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
 
@@ -416,25 +419,28 @@ class CommitTest {
                 Arguments.of(0, new double[]{0, 0}, new double[]{0, 0}),
                 Arguments.of(1, new double[]{0, 0}, new double[]{0, 1}),
                 Arguments.of(1, new double[]{0, 0}, new double[]{1, 0}),
-                Arguments.of(1, new double[]{0, 0}, new double[]{1, 1}),  // TODO
+                Arguments.of(1.4142135623730951, new double[]{0, 0}, new double[]{1, 1}),  // TODO
 
                 Arguments.of(1, new double[]{0, 1}, new double[]{0, 0}),
                 Arguments.of(0, new double[]{0, 1}, new double[]{0, 1}),
-                Arguments.of(1, new double[]{0, 1}, new double[]{1, 0}),  // TODO
+                Arguments.of(1.4142135623730951, new double[]{0, 1}, new double[]{1, 0}),  // TODO
                 Arguments.of(1, new double[]{0, 1}, new double[]{1, 1}),
 
                 Arguments.of(1, new double[]{1, 0}, new double[]{0, 0}),
-                Arguments.of(1, new double[]{1, 0}, new double[]{0, 1}), // TODO
+                Arguments.of(1.4142135623730951, new double[]{1, 0}, new double[]{0, 1}), // TODO
                 Arguments.of(0, new double[]{1, 0}, new double[]{1, 0}),
                 Arguments.of(1, new double[]{1, 0}, new double[]{1, 1}),
 
-                Arguments.of(1, new double[]{1, 1}, new double[]{0, 0}), // TODO
+                Arguments.of(1.4142135623730951, new double[]{1, 1}, new double[]{0, 0}), // TODO
                 Arguments.of(1, new double[]{1, 1}, new double[]{0, 1}),
                 Arguments.of(1, new double[]{1, 1}, new double[]{1, 0}),
                 Arguments.of(0, new double[]{1, 1}, new double[]{1, 1}),
 
                 Arguments.of(2, new double[]{-1, 0}, new double[]{1, 0}),
                 Arguments.of(2, new double[]{0, -1}, new double[]{0, 1}),
+
+                Arguments.of(1.4142135623730951, new double[]{0, 0}, new double[]{-1, -1}),
+
                 // TODO: add more cases
 
                 // unknown behavior
@@ -460,8 +466,8 @@ class CommitTest {
                 Arguments.of(new double[]{}, new double[]{}), // unknown
                 Arguments.of(new double[]{0}, new double[]{0}),
                 Arguments.of(new double[]{0, 0}, new double[]{0, 0}),
-                Arguments.of(new double[]{0.5, 0.5}, new double[]{0, 1}),
-                Arguments.of(new double[]{1, 1}, new double[]{-1, 1})
+                Arguments.of(new double[]{0.25, 0.25}, new double[]{0, 1}),
+                Arguments.of(new double[]{0.5, 0.5}, new double[]{-1, 1})
         );
     }
     @ParameterizedTest(name = "{index} => expected={0} input1={1}")
