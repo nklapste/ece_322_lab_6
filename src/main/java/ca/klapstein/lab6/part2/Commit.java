@@ -63,8 +63,13 @@ public class Commit {
         double[] normalized = new double[values.length];
 
         for (int i = 0; i < values.length; i++)
-            normalized[i] = (values[i] - min) / (max - min);
-
+            if ((max-min) != 0)  // fix compensate for potential div by 0
+                normalized[i] = (values[i] - min) / (max - min);
+            else  // all element in the values array are equal
+                if (values[i] == 0)  // accommodate for 0 values
+                    normalized[i] = 0;
+                else
+                    normalized[i] = 1.0 / values.length;
         return normalized;
     }
 
