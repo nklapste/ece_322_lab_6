@@ -56,8 +56,10 @@ class CommitTest {
         return Stream.of(
                 Arguments.of(Double.MIN_VALUE, new double[]{}),
 
+                // NEW: fail assert
                 // fail assert
                 Arguments.of(0, new double[]{0}),
+                // NEW: fail assert
                 // fail assert
                 Arguments.of(0, new double[]{0, 0}),
 
@@ -65,11 +67,13 @@ class CommitTest {
                 Arguments.of(1, new double[]{0, 1}),
                 Arguments.of(1, new double[]{1, 0}),
                 Arguments.of(1, new double[]{1, 1}),
-
+                // NEW: fail assert
                 // fail assert
                 Arguments.of(0, new double[]{0, -1}),
+                // NEW: fail assert
                 // fail assert
                 Arguments.of(0, new double[]{-1, 0}),
+                // NEW: fail assert
                 // fail assert
                 Arguments.of(-1, new double[]{-1, -1}),
                 Arguments.of(1, new double[]{1, -1}),
@@ -130,14 +134,17 @@ class CommitTest {
                 Arguments.of(new double[]{0}, new double[]{0}),
                 Arguments.of(new double[]{0, 0}, new double[]{0, 0}),
 
-                // all tests below fail assert
+                // NEW: still fail
+                // fail assert
                 Arguments.of(new double[]{1}, new double[]{1}),
 
                 Arguments.of(new double[]{0, 1}, new double[]{0, 1}),
                 Arguments.of(new double[]{1, 0}, new double[]{1, 0}),
-                Arguments.of(new double[]{0.5, 0.5}, new double[]{1, 1}),
 
-                Arguments.of(new double[]{0, 1}, new double[]{0, -1}),
+                // NEW: fail assert
+                Arguments.of(new double[]{0.5, 0.5}, new double[]{1, 1}),
+                // NEW: these pass now
+                Arguments.of(new double[]{1, 0}, new double[]{0, -1}),
 
                 Arguments.of(new double[]{0, 1}, new double[]{50, 100}),
                 Arguments.of(new double[]{1, 0}, new double[]{100, 50}),
@@ -145,6 +152,7 @@ class CommitTest {
                 Arguments.of(new double[]{0.3, 1, 0}, new double[]{65, 100, 50}),
                 Arguments.of(new double[]{1, 0, 0.3, 0.7}, new double[]{100, -100, -40, 40}),
 
+                // NEW: fail assert
                 Arguments.of(new double[]{0.25, 0.25, 0.25, 0.25}, new double[]{1000000000, 1000000000, 1000000000, 1000000000})
         );
     }
@@ -243,17 +251,23 @@ class CommitTest {
     private static Stream<Arguments> arrayAddProvider() {
         return Stream.of(
                 Arguments.of(new double[]{}, new double[]{}, new double[]{}),
+
+                // NEW: still fail
                 // fail assert
                 Arguments.of(new double[]{0}, new double[]{}, new double[]{0}),
-                // fail assert
+                // NEW: still fail
+                // fail java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
 
+                // NEW: still fail
                 // fail java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
+                // NEW: still fail
                 // fail java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
 
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{0}),
+                // NEW: still fail
                 // fail assert
                 Arguments.of(new double[]{0, 0}, new double[]{0}, new double[]{0, 0}),
                 Arguments.of(new double[]{0, 0}, new double[]{0, 0}, new double[]{0, 0}),
@@ -261,11 +275,13 @@ class CommitTest {
                 Arguments.of(new double[]{1}, new double[]{0}, new double[]{1}),
                 Arguments.of(new double[]{1}, new double[]{1}, new double[]{0}),
 
+                // NEW: still fail
                 // all fail assert
                 Arguments.of(new double[]{0, 1}, new double[]{0}, new double[]{0, 1}),
                 Arguments.of(new double[]{1, 0}, new double[]{0}, new double[]{1, 0}),
                 Arguments.of(new double[]{1, 1}, new double[]{0}, new double[]{1, 1}),
 
+                // all below pass
                 Arguments.of(new double[]{0, 1}, new double[]{0, 0}, new double[]{0, 1}),
                 Arguments.of(new double[]{1, 0}, new double[]{0, 0}, new double[]{1, 0}),
                 Arguments.of(new double[]{1, 1}, new double[]{0, 0}, new double[]{1, 1}),
@@ -292,8 +308,10 @@ class CommitTest {
 
     private static Stream<Arguments> negateProvider() {
         return Stream.of(
+                // NEW: only passing test all others fail
                 Arguments.of(new double[]{}, new double[]{}),
 
+                // NEW: all fail assert
                 Arguments.of(new double[]{0}, new double[]{0}),
                 Arguments.of(new double[]{-1}, new double[]{1}),
                 Arguments.of(new double[]{1}, new double[]{-1}),
