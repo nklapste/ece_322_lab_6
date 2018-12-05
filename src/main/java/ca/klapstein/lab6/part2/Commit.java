@@ -14,7 +14,6 @@ public class Commit {
         double[] values = new double[n];
         for (int i = 0; i < values.length; i++)
             values[i] = a + (Math.random() * (b - a));
-
         return values;
     }
 
@@ -25,10 +24,12 @@ public class Commit {
      * @return Highest value in passed array
      */
     public static double max(double[] values) {
-        double max = Double.MIN_VALUE;
-        for (int i = 0; i < values.length; i++) {
-            if (max < values[i])
-                max = values[i];
+        double max = Double.NaN;  // fix using NaN as indicator of no result
+        for (double value : values) {
+            if (Double.isNaN(max))
+                max = value;
+            if (max < value)
+                max = value;
         }
         return max;
     }
@@ -40,10 +41,12 @@ public class Commit {
      * @return Smallest value in the array
      */
     public static double min(double[] values) {
-        double min = Double.MAX_VALUE;
-        for (int i = 0; i < values.length; i++) {
-            if (min > values[i])
-                min = values[i];
+        double min = Double.NaN;  // fix using NaN as indicator of no result
+        for (double value : values) {
+            if (Double.isNaN(min))
+                min = value;
+            if (min > value)
+                min = value;
         }
         return min;
     }
