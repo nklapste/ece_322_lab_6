@@ -1,7 +1,7 @@
 package ca.klapstein.lab6.part2;
 
 public class MathPackage {
-	
+
 	/**
 	 * Creates an array of n random values in the range [a,b]
 	 * @param n Number of values to generate
@@ -14,11 +14,11 @@ public class MathPackage {
 		double[] values = new double[n];
 		for(int i=0;i<values.length;i++)
 			values[i] = a + (Math.random()*(b - a));
-		
-		return values;
+
+        return values;
 	}
-	
-	/**
+
+    /**
 	 * Returns the maximum values contained in the passed array
 	 * @param values Array to search in
 	 * @return Highest value in passed array
@@ -31,8 +31,8 @@ public class MathPackage {
 		}
 		return max;
 	}
-	
-	/**
+
+    /**
 	 * Returns the minimum values of an array
 	 * @param values Array to search through
 	 * @return Smallest value in the array
@@ -45,8 +45,8 @@ public class MathPackage {
 		}
 		return min;
 	}
-	
-	/**
+
+    /**
 	 * Normalizes the values in the passed array to [0,1]
 	 * @param values Array to be normalized
 	 * @return Normalized array
@@ -55,14 +55,14 @@ public class MathPackage {
 		double max = MathPackage.max(values);
 		double min = MathPackage.min(values);
 		double[] normalized = new double[values.length];
-		
-		for (int i=0;i<values.length;i++)
+
+        for (int i=0;i<values.length;i++)
 			normalized[i] = (min - values[i])/(max-min);
-		
-		return normalized;
+
+        return normalized;
 	}
-	
-	/**
+
+    /**
 	 * Calculates the sum of the array elements
 	 * @param values Array to sum
 	 * @return summed value
@@ -74,8 +74,8 @@ public class MathPackage {
 			sum += values[i];
 		return sum;
 	}
-	
-	/**
+
+    /**
 	 * Calculates the standard deviation of the values in the array
 	 * @param values Array to calculate deviation of
 	 * @return standard deviation
@@ -88,8 +88,8 @@ public class MathPackage {
 			variance += Math.pow(values[i]-mean, 2);
 		return Math.sqrt(variance/values.length);
 	}
-	
-	/**
+
+    /**
 	 * Adds two arrays together, element-wise
 	 * @param d1 first array
 	 * @param d2 second array
@@ -102,8 +102,8 @@ public class MathPackage {
 		}
 		return result;
 	}
-	
-	/**
+
+    /**
 	 * Negates the values in the array
 	 * @param d values
 	 * @return result
@@ -114,5 +114,5 @@ public class MathPackage {
 			result[i] = 0 - d[i];
 		}
 		return result;
-	}	
+    }
 }
