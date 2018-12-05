@@ -23,12 +23,17 @@ public class ArrayLibTest {
     }
 
     @Test
-    public void reverse() {
+    public void reverseNull() {
+        assertArrayEquals(new String[]{}, ArrayLib.reverse(new String[]{}, String.class));
+        assertArrayEquals(new String[]{null}, ArrayLib.reverse(new String[]{null}, String.class));
+        assertArrayEquals(new String[]{null, null}, ArrayLib.reverse(new String[]{null, null}, String.class));
+    }
+
+    @Test
+    public void reverseOrderVerify() {
         String[] array = getExampleArray();
         String[] arrayReversed = ArrayLib.reverse(array, String.class);
         assertArrayEquals(new String[]{"ree", "bar", "foo"}, arrayReversed);
-        assertArrayEquals(new String[]{}, ArrayLib.reverse(new String[]{}, String.class));
-        assertArrayEquals(new String[]{null, null}, ArrayLib.reverse(new String[]{null, null}, String.class));
     }
 
     @Test
@@ -92,20 +97,26 @@ public class ArrayLibTest {
 
     @Test
     public void compact() {
-        String[] compactableArray1 = new String[]{"foo", "bar", null, "ree"};
+        String[] compactableArray0 = new String[]{null, "foo", "bar", "ree"};
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray0, String.class));
+
+        String[] compactableArray1 = new String[]{"foo", null, "bar", "ree"};
         assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray1, String.class));
 
-        String[] compactableArray2 = new String[]{"foo", "bar", "ree", null};
+        String[] compactableArray2 = new String[]{"foo", "bar", null, "ree"};
         assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray2, String.class));
 
-        String[] compactableArray3 = new String[]{null, "foo", "bar", "ree"};
+        String[] compactableArray3 = new String[]{"foo", "bar", "ree", null};
         assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray3, String.class));
 
-        String[] compactableArray4 = new String[]{null, "foo", "bar", "ree", null};
+        String[] compactableArray4 = new String[]{null, null, "foo", "bar", "ree"};
         assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray4, String.class));
 
-        String[] compactableArray5 = new String[]{null, "foo", "bar", "ree", null, null};
+        String[] compactableArray5 = new String[]{null, "foo", "bar", "ree", null};
         assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray5, String.class));
+
+        String[] compactableArray6 = new String[]{null, "foo", "bar", "ree", null, null};
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray6, String.class));
     }
 
     @Test
@@ -139,11 +150,19 @@ public class ArrayLibTest {
     }
 
     /**
-     * This original thrown a java.lang.AssertionError. As removing an element at index 0 would be skipped.
+     * TODO: NOTE: This originally thrown a {@code java.lang.AssertionError}. As removing an element at index 0 would be skipped.
      */
     @Test
     public void withoutIndex0() {
         assertArrayEquals(new String[]{"bar", "ree"}, ArrayLib.without(getExampleArray(), String.class, "foo"));
+    }
+
+    /**
+     * TODO: NOTE: fix was applied to {@code ArrayLib.without()} before this was throwing {@code java.lang.NullPointerException}
+     */
+    @Test
+    public void withoutNull() {
+        assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class));
     }
 
     @Test
@@ -156,12 +175,5 @@ public class ArrayLibTest {
     @Test
     public void withoutNonSuch() {
         assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, "NONSUCH"));
-    }
-
-    @Test
-    public void withoutNull() {
-        // throws java.lang.NullPointerException unknown if expected
-        // fixed
-        assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class));
     }
 }
