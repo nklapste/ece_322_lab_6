@@ -161,9 +161,7 @@ public class ArrayLibTest {
     @Test
     public void withoutNull() {
         // throws java.lang.NullPointerException unknown if expected
-        assertThrows(NullPointerException.class,
-                () -> {
-                    assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, null));
-                });
+        // fixed
+        assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class));
     }
 }
