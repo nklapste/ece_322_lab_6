@@ -95,14 +95,27 @@ public class Commit {
     /**
      * Adds two arrays together, element-wise
      *
+     * Fix: If arrays are different sizes the returned array will be the size of the
+     * largest array.
+     *
+     * Examples:
+     * {0} = arrayAdd({},{0})
+     * {0, 1} = arrayAdd({0},{0, 1})
+     *
      * @param d1 first array
      * @param d2 second array
      * @return result of addition
      */
     public static double[] arrayAdd(double[] d1, double[] d2) {
-        double[] result = new double[d1.length];
+        double[] result = new double[(int) max(new double[]{d1.length, d2.length})];  // want to only use internal lib
         for (int i = 0; i < result.length; i++) {
-            result[i] = d1[i] + d2[i];
+            double p1 = 0;
+            double p2 = 0;
+            if (d1.length > i)
+                p1 = d1[i];
+            if (d2.length > i)
+                p2 = d2[i];
+            result[i] = p1 + p2;
         }
         return result;
     }
@@ -116,7 +129,7 @@ public class Commit {
     public static double[] arrayNegate(double[] d) {
         double[] result = new double[d.length];
         for (int i = 0; i < d.length; i++) {
-            result[i] = -1 - d[i];
+            result[i] = -1*d[i];  // fix negation
         }
         return result;
     }
@@ -132,6 +145,7 @@ public class Commit {
         return arrayAdd(d1, arrayNegate(d2));
     }
 
+    // FIX: implemented the actual displacement algorithm
     /**
      * Calculates the Cartesian distance between points defined by d1 and d2
      *
@@ -140,9 +154,15 @@ public class Commit {
      * @return Cartesian distance
      */
     public static double distance(double[] d1, double[] d2) {
-        return 0;
+        double[] disp = arraySubtract(d1, d2);
+        double distance = 0;
+        for (int i = 0; i < disp.length; i++){
+            distance += disp[i]*disp[i];
+        }
+        return Math.sqrt(distance);
     }
 
+    // TODO: validate better
     /**
      * Calculates an array representing the deviation each value in
      * the array is from the mean value of the set
