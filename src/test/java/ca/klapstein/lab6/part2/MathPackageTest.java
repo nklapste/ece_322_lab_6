@@ -27,29 +27,30 @@ class MathPackageTest {
         assertEquals(1, MathPackage.random(1, 1, 1).length);
         assertEquals(1, MathPackage.random(1, 100.0, 100.0).length);
         assertArrayEquals(new double[]{1.0}, MathPackage.random(1, 1.0, 1.0));
-        assertArrayEquals(new double[]{0,0,0,0,0}, MathPackage.random(5, 0.0, 0.0));
+        assertArrayEquals(new double[]{0, 0, 0, 0, 0}, MathPackage.random(5, 0.0, 0.0));
 
     }
 
     @Test
     void randomValidateValues() {
-        double[] randomDoubles  =  MathPackage.random(100000, -1000000000.000, 1000000000.000);
-        for (double d: randomDoubles){
+        double[] randomDoubles = MathPackage.random(100000, -1000000000.000, 1000000000.000);
+        for (double d : randomDoubles) {
             assertTrue(d >= -1000000000.000);
             assertTrue(d <= 1000000000.000);
         }
 
-        double[] randomDoubles2  =  MathPackage.random(100000, -10, 0);
-        for (double d: randomDoubles2){
+        double[] randomDoubles2 = MathPackage.random(100000, -10, 0);
+        for (double d : randomDoubles2) {
             assertTrue(d >= -10);
             assertTrue(d <= 0);
         }
     }
+
     @Test
     void max() {
         assertEquals(1.0, MathPackage.max(new double[]{1.0}));
-        assertEquals(0.5, MathPackage.max(new double[]{0.2,0.5}));
-        assertEquals(5.0, MathPackage.max(new double[]{-0.4, 5, 3.0, 5.0, -2.1,-10050.123}));
+        assertEquals(0.5, MathPackage.max(new double[]{0.2, 0.5}));
+        assertEquals(5.0, MathPackage.max(new double[]{-0.4, 5, 3.0, 5.0, -2.1, -10050.123}));
     }
 
     @Test
@@ -61,7 +62,7 @@ class MathPackageTest {
     void min() {
         assertEquals(1.0, MathPackage.min(new double[]{1.0}));
         assertEquals(0.2, MathPackage.min(new double[]{0.2, 0.5}));
-        assertEquals(-10050.123, MathPackage.min(new double[]{-0.4, 5, 3.0, 5.0, -2.1,-10050.123}));
+        assertEquals(-10050.123, MathPackage.min(new double[]{-0.4, 5, 3.0, 5.0, -2.1, -10050.123}));
     }
 
     @Test
@@ -123,12 +124,12 @@ class MathPackageTest {
     @Test
     void stddev() {
         assertEquals(0, MathPackage.stddev(new double[]{0}));
-        assertEquals(0.5, MathPackage.stddev(new double[]{0,1}));
-        assertEquals(0, MathPackage.stddev(new double[]{1,1}));
-        assertEquals(1, MathPackage.stddev(new double[]{-1,1}));
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{-1,1,1}), 0.00000001);
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1,-1,1}), 0.00000001);
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1,-1,-1}), 0.00000001);
+        assertEquals(0.5, MathPackage.stddev(new double[]{0, 1}));
+        assertEquals(0, MathPackage.stddev(new double[]{1, 1}));
+        assertEquals(1, MathPackage.stddev(new double[]{-1, 1}));
+        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{-1, 1, 1}), 0.00000001);
+        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1, -1, 1}), 0.00000001);
+        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1, -1, -1}), 0.00000001);
         assertEquals(0, MathPackage.stddev(new double[]{1000000000, 1000000000, 1000000000, 1000000000, 1000000000}));
     }
 
@@ -147,8 +148,8 @@ class MathPackageTest {
         // originally caused error
         assertArrayEquals(new double[]{1}, MathPackage.arrayAdd(new double[]{1}, new double[]{}));
         assertArrayEquals(new double[]{1}, MathPackage.arrayAdd(new double[]{}, new double[]{1}));
-        assertArrayEquals(new double[]{1,1}, MathPackage.arrayAdd(new double[]{1}, new double[]{0,1}));
-        assertArrayEquals(new double[]{1,1}, MathPackage.arrayAdd(new double[]{0,1}, new double[]{1}));
+        assertArrayEquals(new double[]{1, 1}, MathPackage.arrayAdd(new double[]{1}, new double[]{0, 1}));
+        assertArrayEquals(new double[]{1, 1}, MathPackage.arrayAdd(new double[]{0, 1}, new double[]{1}));
     }
 
     @Test
@@ -173,7 +174,7 @@ class MathPackageTest {
         assertArrayEquals(new double[]{1.5, 2.5}, MathPackage.arrayNegate(new double[]{-1.5, -2.5}));
         assertArrayEquals(new double[]{-1.5, -2.5}, MathPackage.arrayNegate(new double[]{1.5, 2.5}));
         assertArrayEquals(new double[]{1, 1, 1, 0, -1, -1, -1}, MathPackage.arrayNegate(new double[]{-1, -1, -1, 0, 1, 1, 1}));
-        assertArrayEquals(new double[]{0,0,0,0,0,0,0,0,0,0}, MathPackage.arrayNegate(new double[]{0,0,0,0,0,0,0,0,0,0}));
+        assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, MathPackage.arrayNegate(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
         assertArrayEquals(new double[]{1000000000, 1000000000}, MathPackage.arrayNegate(new double[]{-1000000000, -1000000000}));
         assertArrayEquals(new double[]{-1000000000, -1000000000}, MathPackage.arrayNegate(new double[]{1000000000, 1000000000}));
     }

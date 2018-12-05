@@ -17,7 +17,7 @@ public class ArrayLibTest {
 
 
     @Test
-    public void constructor(){
+    public void constructor() {
         ArrayLib arrayLib = new ArrayLib();
         assertNotNull(arrayLib);
     }
@@ -37,10 +37,10 @@ public class ArrayLibTest {
     }
 
     @Test
-    public void uniqueNull(){
+    public void uniqueNull() {
         // removes nulls unknown if expected
         assertThrows(AssertionError.class,
-                ()->{
+                () -> {
                     assertEquals(new String[]{null}, ArrayLib.unique(new String[]{null}, String.class));
                 });
     }
@@ -56,10 +56,12 @@ public class ArrayLibTest {
     }
 
     @Test
-    public void intersectionNull(){
+    public void intersectionNull() {
         // removes nulls unknown if expected
         assertThrows(AssertionError.class,
-                ()->{assertArrayEquals(new String[]{null, null}, ArrayLib.union(new String[]{null}, new String[]{null}, String.class));});
+                () -> {
+                    assertArrayEquals(new String[]{null, null}, ArrayLib.union(new String[]{null}, new String[]{null}, String.class));
+                });
     }
 
     @Test
@@ -67,16 +69,17 @@ public class ArrayLibTest {
         assertArrayEquals(new String[]{}, ArrayLib.intersection(new String[]{"oob", "joob"}, getExampleArray(), String.class));
         assertArrayEquals(new String[]{}, ArrayLib.intersection(new String[]{null}, getExampleArray(), String.class));
     }
+
     @Test
     public void union() {
         assertArrayEquals(new String[]{"foo", "bar", "ree", "oob", "joob"}, ArrayLib.union(getExampleArray(), new String[]{"oob", "joob"}, String.class));
     }
 
     @Test
-    public void unionNull(){
+    public void unionNull() {
         // removes nulls unknown if expected
         assertThrows(AssertionError.class,
-                ()->{
+                () -> {
                     assertArrayEquals(new String[]{"foo", "bar", "ree", null}, ArrayLib.union(getExampleArray(), new String[]{null, null}, String.class));
                 });
     }
@@ -144,7 +147,7 @@ public class ArrayLibTest {
     }
 
     @Test
-    public void withoutIndex1(){
+    public void withoutIndex1() {
         assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar"));
         assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar", null));
         assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, null, "bar", null));
@@ -156,10 +159,10 @@ public class ArrayLibTest {
     }
 
     @Test
-    public void withoutNull(){
+    public void withoutNull() {
         // throws java.lang.NullPointerException unknown if expected
         assertThrows(NullPointerException.class,
-                ()->{
+                () -> {
                     assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, null));
                 });
     }
