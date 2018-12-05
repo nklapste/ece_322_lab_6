@@ -1,10 +1,9 @@
 package ca.klapstein.lab6.part1;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ArrayLibTest {
 
@@ -16,13 +15,6 @@ public class ArrayLibTest {
         return new String[]{};
     }
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void constructor(){
@@ -34,76 +26,83 @@ public class ArrayLibTest {
     public void reverse() {
         String[] array = getExampleArray();
         String[] arrayReversed = ArrayLib.reverse(array, String.class);
-        assertEquals(new String[]{"ree", "bar", "foo"}, arrayReversed);
-        assertEquals(new String[]{}, ArrayLib.reverse(new String[]{}, String.class));
-        assertEquals(new String[]{null, null}, ArrayLib.reverse(new String[]{null, null}, String.class));
+        assertArrayEquals(new String[]{"ree", "bar", "foo"}, arrayReversed);
+        assertArrayEquals(new String[]{}, ArrayLib.reverse(new String[]{}, String.class));
+        assertArrayEquals(new String[]{null, null}, ArrayLib.reverse(new String[]{null, null}, String.class));
     }
 
     @Test
     public void uniqueAlready() {
-        assertEquals(getExampleArray(), ArrayLib.unique(getExampleArray(), String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.unique(getExampleArray(), String.class));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void uniqueNull(){
         // removes nulls unknown if expected
-        assertEquals(new String[]{null}, ArrayLib.unique(new String[]{null}, String.class));
+        assertThrows(AssertionError.class,
+                ()->{
+                    assertEquals(new String[]{null}, ArrayLib.unique(new String[]{null}, String.class));
+                });
     }
 
     @Test
     public void uniqueNotAlready() {
-        assertEquals(getExampleArray(), ArrayLib.unique(new String[]{"foo", "bar", "ree", "foo"}, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.unique(new String[]{"foo", "bar", "ree", "foo"}, String.class));
     }
 
     @Test
     public void intersection() {
-        assertEquals(getExampleArray(), ArrayLib.intersection(getExampleArray(), getExampleArray(), String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.intersection(getExampleArray(), getExampleArray(), String.class));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void intersectionNull(){
         // removes nulls unknown if expected
-        assertEquals(new String[]{null, null}, ArrayLib.union(new String[]{null}, new String[]{null}, String.class));
+        assertThrows(AssertionError.class,
+                ()->{assertArrayEquals(new String[]{null, null}, ArrayLib.union(new String[]{null}, new String[]{null}, String.class));});
     }
 
     @Test
     public void intersectionDisjoint() {
-        assertEquals(new String[]{}, ArrayLib.intersection(new String[]{"oob", "joob"}, getExampleArray(), String.class));
-        assertEquals(new String[]{}, ArrayLib.intersection(new String[]{null}, getExampleArray(), String.class));
+        assertArrayEquals(new String[]{}, ArrayLib.intersection(new String[]{"oob", "joob"}, getExampleArray(), String.class));
+        assertArrayEquals(new String[]{}, ArrayLib.intersection(new String[]{null}, getExampleArray(), String.class));
     }
     @Test
     public void union() {
-        assertEquals(new String[]{"foo", "bar", "ree", "oob", "joob"}, ArrayLib.union(getExampleArray(), new String[]{"oob", "joob"}, String.class));
+        assertArrayEquals(new String[]{"foo", "bar", "ree", "oob", "joob"}, ArrayLib.union(getExampleArray(), new String[]{"oob", "joob"}, String.class));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void unionNull(){
         // removes nulls unknown if expected
-        assertEquals(new String[]{"foo", "bar", "ree", null}, ArrayLib.union(getExampleArray(), new String[]{null, null}, String.class));
+        assertThrows(AssertionError.class,
+                ()->{
+                    assertArrayEquals(new String[]{"foo", "bar", "ree", null}, ArrayLib.union(getExampleArray(), new String[]{null, null}, String.class));
+                });
     }
 
     @Test
     public void compactRedundant() {
-        assertEquals(getExampleArray(), ArrayLib.compact(getExampleArray(), String.class));
-        assertEquals(getExampleEmptyArray(), ArrayLib.compact(getExampleEmptyArray(), String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(getExampleArray(), String.class));
+        assertArrayEquals(getExampleEmptyArray(), ArrayLib.compact(getExampleEmptyArray(), String.class));
     }
 
     @Test
     public void compact() {
         String[] compactableArray1 = new String[]{"foo", "bar", null, "ree"};
-        assertEquals(getExampleArray(), ArrayLib.compact(compactableArray1, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray1, String.class));
 
         String[] compactableArray2 = new String[]{"foo", "bar", "ree", null};
-        assertEquals(getExampleArray(), ArrayLib.compact(compactableArray2, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray2, String.class));
 
         String[] compactableArray3 = new String[]{null, "foo", "bar", "ree"};
-        assertEquals(getExampleArray(), ArrayLib.compact(compactableArray3, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray3, String.class));
 
         String[] compactableArray4 = new String[]{null, "foo", "bar", "ree", null};
-        assertEquals(getExampleArray(), ArrayLib.compact(compactableArray4, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray4, String.class));
 
         String[] compactableArray5 = new String[]{null, "foo", "bar", "ree", null, null};
-        assertEquals(getExampleArray(), ArrayLib.compact(compactableArray5, String.class));
+        assertArrayEquals(getExampleArray(), ArrayLib.compact(compactableArray5, String.class));
     }
 
     @Test
@@ -126,6 +125,7 @@ public class ArrayLibTest {
         assertTrue(ArrayLib.contains(getExampleArray(), "foo"));
         assertTrue(ArrayLib.contains(getExampleArray(), "bar"));
         assertTrue(ArrayLib.contains(getExampleArray(), "ree"));
+
         assertFalse(ArrayLib.contains(getExampleArray(), null));
         assertFalse(ArrayLib.contains(getExampleArray(), ""));
         assertFalse(ArrayLib.contains(getExampleArray(), "NONSUCH"));
@@ -140,24 +140,27 @@ public class ArrayLibTest {
      */
     @Test
     public void withoutIndex0() {
-        assertEquals(new String[]{"bar", "ree"}, ArrayLib.without(getExampleArray(), String.class, "foo"));
+        assertArrayEquals(new String[]{"bar", "ree"}, ArrayLib.without(getExampleArray(), String.class, "foo"));
     }
 
     @Test
     public void withoutIndex1(){
-        assertEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar"));
-        assertEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar", null));
-        assertEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, null, "bar", null));
+        assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar"));
+        assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, "bar", null));
+        assertArrayEquals(new String[]{"foo", "ree"}, ArrayLib.without(getExampleArray(), String.class, null, "bar", null));
     }
 
     @Test
     public void withoutNonSuch() {
-        assertEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, "NONSUCH"));
+        assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, "NONSUCH"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void withoutNull(){
         // throws java.lang.NullPointerException unknown if expected
-        assertEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, null));
+        assertThrows(NullPointerException.class,
+                ()->{
+                    assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class, null));
+                });
     }
 }
