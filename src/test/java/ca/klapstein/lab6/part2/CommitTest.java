@@ -459,7 +459,9 @@ class CommitTest {
                 // all fail
                 Arguments.of(new double[]{}, new double[]{}), // unknown
                 Arguments.of(new double[]{0}, new double[]{0}),
-                Arguments.of(new double[]{0, 0}, new double[]{0, 0})
+                Arguments.of(new double[]{0, 0}, new double[]{0, 0}),
+                Arguments.of(new double[]{0.5, 0.5}, new double[]{0, 1}),
+                Arguments.of(new double[]{1, 1}, new double[]{-1, 1})
         );
     }
     @ParameterizedTest(name = "{index} => expected={0} input1={1}")
