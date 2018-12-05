@@ -52,55 +52,106 @@ class MathPackageTest {
             assertTrue(d <= 0);
         }
     }
+    private static Stream<Arguments> maxProvider() {
+        return Stream.of(
+                Arguments.of(Double.MIN_VALUE, new double[]{}),
 
-    @Test
-    void max() {
-        assertEquals(1.0, MathPackage.max(new double[]{1.0}));
-        assertEquals(0.5, MathPackage.max(new double[]{0.2, 0.5}));
+                // fail assert
+                Arguments.of(0, new double[]{0}),
+                // fail assert
+                Arguments.of(0, new double[]{0, 0}),
 
-        assertEquals(0.000000005, MathPackage.max(new double[]{0.000000002, 0.000000005}));
+                Arguments.of(1, new double[]{1}),
+                Arguments.of(1, new double[]{0, 1}),
+                Arguments.of(1, new double[]{1, 0}),
+                Arguments.of(1, new double[]{1, 1}),
 
-        assertEquals(5.0, MathPackage.max(new double[]{-0.4, 5, 3.0, 5.0, -2.1, -10050.123}));
+                // fail assert
+                Arguments.of(0, new double[]{0, -1}),
+                // fail assert
+                Arguments.of(0, new double[]{-1, 0}),
+                // fail assert
+                Arguments.of(-1, new double[]{-1, -1}),
+                Arguments.of(1, new double[]{1, -1}),
+
+                Arguments.of(0.5, new double[]{0.2, 0.5}),
+
+                Arguments.of(100, new double[]{50, 100}),
+                Arguments.of(100, new double[]{100, 50}),
+
+                Arguments.of(Double.MAX_VALUE, new double[]{0, 1, 2, 3, 5, Double.MAX_VALUE}),
+                Arguments.of(Double.MAX_VALUE, new double[]{Double.MIN_VALUE, Double.MAX_VALUE}),
+                Arguments.of(Double.MIN_VALUE, new double[]{Double.MIN_VALUE}),
+
+                Arguments.of(5.0, new double[]{-0.4, 5, 3.0, 5.0, -2.1, -10050.123}),
+
+                Arguments.of(0.000000005, new double[]{0.000000002, 0.000000005})
+            );
     }
-
-    @Test
-    void maxNull() {
-        assertEquals(Double.MIN_VALUE, MathPackage.max(new double[]{}));
+    @ParameterizedTest(name = "{index} => expected={0} input={1}")
+    @MethodSource("maxProvider")
+    void max(Number expected, double[] input) {
+        assertEquals(expected.doubleValue(), MathPackage.max(input));
     }
 
     private static Stream<Arguments> minProvider() {
         return Stream.of(
                 Arguments.of(Double.MAX_VALUE, new double[]{}),  // unexpectedish
+
                 Arguments.of(0, new double[]{0}),
                 Arguments.of(0, new double[]{0, 0}),
+
                 Arguments.of(1, new double[]{1}),
+
                 Arguments.of(0, new double[]{0, 1}),
                 Arguments.of(0, new double[]{1, 0}),
                 Arguments.of(1, new double[]{1, 1}),
+
                 Arguments.of(-1, new double[]{0, -1}),
+                Arguments.of(-1, new double[]{-1, 0}),
+                Arguments.of(-1, new double[]{-1, -1}),
+
                 Arguments.of(50, new double[]{50, 100}),
                 Arguments.of(0.2, new double[]{0.2, 0.5}),
 
                 Arguments.of(-10050.123, new double[]{-0.4, 5, 3.0, 5.0, -2.1, -10050.123})
         );
     }
+    @ParameterizedTest(name = "{index} => expected={0} input={1}")
+    @MethodSource("minProvider")
+    void min(Number expected, double[] input) {
+        assertEquals(expected.doubleValue(), MathPackage.min(input));
+    }
 
     private static Stream<Arguments> normalizeProvider() {
         return Stream.of(
                 Arguments.of(new double[]{}, new double[]{}),
+
                 Arguments.of(new double[]{0}, new double[]{0}),
                 Arguments.of(new double[]{0, 0}, new double[]{0, 0}),
+
+                // all tests below fail assert
                 Arguments.of(new double[]{1}, new double[]{1}),
+
                 Arguments.of(new double[]{0, 1}, new double[]{0, 1}),
                 Arguments.of(new double[]{1, 0}, new double[]{1, 0}),
                 Arguments.of(new double[]{0.5, 0.5}, new double[]{1, 1}),
+
                 Arguments.of(new double[]{0, 1}, new double[]{0, -1}),
+
                 Arguments.of(new double[]{0, 1}, new double[]{50, 100}),
                 Arguments.of(new double[]{1, 0}, new double[]{100, 50}),
+
                 Arguments.of(new double[]{0.3, 1, 0}, new double[]{65, 100, 50}),
                 Arguments.of(new double[]{1, 0, 0.3, 0.7}, new double[]{100, -100, -40, 40}),
+
                 Arguments.of(new double[]{0.25, 0.25, 0.25, 0.25}, new double[]{1000000000, 1000000000, 1000000000, 1000000000})
         );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input={1}")
+    @MethodSource("normalizeProvider")
+    void normalize(double[] expected, double[] input) {
+        assertArrayEquals(expected, MathPackage.normalize(input));
     }
 
     private static Stream<Arguments> sumProvider() {
@@ -130,95 +181,146 @@ class MathPackageTest {
                 Arguments.of(0, new double[]{1000000000, -1000000000})
         );
     }
-
-    @ParameterizedTest(name = "{index} => expected={0} input={1}")
-    @MethodSource("minProvider")
-    void min(Number expected, double[] input) {
-        assertEquals(expected.doubleValue(), MathPackage.min(input));
-    }
-
-    @ParameterizedTest(name = "{index} => expected={0} input={1}")
-    @MethodSource("normalizeProvider")
-    void normalizeNaN(double[] expected, double[] input) {
-        assertArrayEquals(expected, MathPackage.normalize(input));
-    }
-
     @ParameterizedTest(name = "{index} => expected={0} input={1}")
     @MethodSource("sumProvider")
     void sum(Number expected, double[] input) {
         assertEquals(expected.doubleValue(), MathPackage.sum(input));
     }
 
-    @Test
-    void stddev() {
-        assertEquals(0, MathPackage.stddev(new double[]{0}));
-        assertEquals(0.5, MathPackage.stddev(new double[]{0, 1}));
-        assertEquals(0, MathPackage.stddev(new double[]{1, 1}));
-        assertEquals(1, MathPackage.stddev(new double[]{-1, 1}));
+    private static Stream<Arguments> stddevProvider() {
+        return Stream.of(
+                Arguments.of(Double.NaN, new double[]{}),
 
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{-1, 1, 1}), 0.00000001);
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1, -1, 1}), 0.00000001);
-        assertEquals(0.94280904158206, MathPackage.stddev(new double[]{1, -1, -1}), 0.00000001);
+                Arguments.of(0, new double[]{0}),
+                Arguments.of(0, new double[]{0, 0}),
+                Arguments.of(0, new double[]{0, 0, 0, 0, 0, 0, 0}),
 
-        assertEquals(0, MathPackage.stddev(new double[]{1000000000}));
-//        assertEquals(1000000000, MathPackage.stddev(new double[]{0, 1000000000}));
-        assertEquals(0, MathPackage.stddev(new double[]{1000000000, 1000000000}));
-        assertEquals(0, MathPackage.stddev(new double[]{1000000000, 1000000000, 1000000000, 1000000000, 1000000000}));
+                Arguments.of(0, new double[]{1}),
+                Arguments.of(0.5, new double[]{0, 1}),
+                Arguments.of(0.5, new double[]{1, 0}),
+                Arguments.of(0, new double[]{1, 1}),
+                Arguments.of(0, new double[]{1, 1, 1}),
+
+                Arguments.of(0.5, new double[]{-1, 0}),
+                Arguments.of(0.5, new double[]{0, -1}),
+                Arguments.of(0, new double[]{-1, -1}),
+                Arguments.of(1, new double[]{1, -1}),
+
+                Arguments.of(25, new double[]{50, 100}),
+                Arguments.of(25, new double[]{100, 50}),
+
+                Arguments.of(1.25, new double[]{2, -0.5}),
+                Arguments.of(0.25, new double[]{1, 0.5}),
+
+                Arguments.of(0, new double[]{1000000000}),
+                Arguments.of(0, new double[]{1000000000, 1000000000}),
+                Arguments.of(1000000000, new double[]{1000000000, -1000000000})
+        );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input={1}")
+    @MethodSource("stddevProvider")
+    void stddev(Number expected, double[] input) {
+        assertEquals(expected.doubleValue(), MathPackage.stddev(input));
     }
 
-    @Test
-    void stddevNull() {
-        assertEquals(Double.NaN, MathPackage.stddev(new double[]{}));
+    private static Stream<Arguments> stddevImpreciseProvider() {
+        return Stream.of(
+                Arguments.of(Double.NaN, new double[]{}),
+
+                Arguments.of(0.94280904158206, new double[]{1, -1, -1}),
+                Arguments.of(0.94280904158206, new double[]{1, 1, -1}),
+                Arguments.of(0.94280904158206, new double[]{1, -1, 1}),
+                Arguments.of(0.94280904158206, new double[]{-1, -1, 1})
+        );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input={1}")
+    @MethodSource("stddevImpreciseProvider")
+    void stddevImprecise(Number expected, double[] input){
+        assertEquals(expected.doubleValue(), MathPackage.stddev(input), 0.00000001);
+
     }
 
-    @Test
-    void arrayAddNull() {
-        assertArrayEquals(new double[]{}, MathPackage.arrayAdd(new double[]{}, new double[]{}));
+    private static Stream<Arguments> arrayAddProvider() {
+        return Stream.of(
+                Arguments.of(new double[]{}, new double[]{}, new double[]{}),
+                // fail assert
+                Arguments.of(new double[]{0}, new double[]{}, new double[]{0}),
+                // fail assert
+                Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
+
+                // fail java.lang.ArrayIndexOutOfBoundsException
+                Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
+                // fail java.lang.ArrayIndexOutOfBoundsException
+                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
+
+                Arguments.of(new double[]{0}, new double[]{0}, new double[]{0}),
+                // fail assert
+                Arguments.of(new double[]{0, 0}, new double[]{0}, new double[]{0, 0}),
+                Arguments.of(new double[]{0, 0}, new double[]{0, 0}, new double[]{0, 0}),
+
+                Arguments.of(new double[]{1}, new double[]{0}, new double[]{1}),
+                Arguments.of(new double[]{1}, new double[]{1}, new double[]{0}),
+
+                // all fail assert
+                Arguments.of(new double[]{0, 1}, new double[]{0}, new double[]{0, 1}),
+                Arguments.of(new double[]{1, 0}, new double[]{0}, new double[]{1, 0}),
+                Arguments.of(new double[]{1, 1}, new double[]{0}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{0, 1}, new double[]{0, 0}, new double[]{0, 1}),
+                Arguments.of(new double[]{1, 0}, new double[]{0, 0}, new double[]{1, 0}),
+                Arguments.of(new double[]{1, 1}, new double[]{0, 0}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{1, 2}, new double[]{0, 1}, new double[]{1, 1}),
+                Arguments.of(new double[]{2, 1}, new double[]{1, 0}, new double[]{1, 1}),
+                Arguments.of(new double[]{2, 2}, new double[]{1, 1}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{1, 0}, new double[]{0, -1}, new double[]{1, 1}),
+                Arguments.of(new double[]{0, 1}, new double[]{-1, 0}, new double[]{1, 1}),
+                Arguments.of(new double[]{0, 0}, new double[]{-1, -1}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{101, 20, 101}, new double[]{100, 10, 1}, new double[]{1,10,100}),
+                Arguments.of(new double[]{-99, 0, 99}, new double[]{-100, -10, -1}, new double[]{1,10,100}),
+
+                Arguments.of(new double[]{1}, new double[]{0.5}, new double[]{0.5})
+                );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input1={1} input2={2}")
+    @MethodSource("arrayAddProvider")
+    void arrayAdd(double[] expected, double[] input1, double[] input2) {
+        assertArrayEquals(expected, MathPackage.arrayAdd(input1, input2));
     }
 
-    @Test
-    void arrayAddVaryLengths() {
-        // originally caused error
-        assertArrayEquals(new double[]{1}, MathPackage.arrayAdd(new double[]{1}, new double[]{}));
-        assertArrayEquals(new double[]{1}, MathPackage.arrayAdd(new double[]{}, new double[]{1}));
+    private static Stream<Arguments> negateProvider() {
+        return Stream.of(
+                Arguments.of(new double[]{}, new double[]{}),
 
-        assertArrayEquals(new double[]{1, 1}, MathPackage.arrayAdd(new double[]{1}, new double[]{0, 1}));
-        assertArrayEquals(new double[]{1, 1}, MathPackage.arrayAdd(new double[]{0, 1}, new double[]{1}));
+                Arguments.of(new double[]{0}, new double[]{0}),
+                Arguments.of(new double[]{-1}, new double[]{1}),
+                Arguments.of(new double[]{1}, new double[]{-1}),
+
+                Arguments.of(new double[]{0, -1}, new double[]{0, 1}),
+                Arguments.of(new double[]{-1, 0}, new double[]{1, 0}),
+                Arguments.of(new double[]{-1, -1}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{0, 1}, new double[]{0, -1}),
+                Arguments.of(new double[]{1, 0}, new double[]{-1, 0}),
+                Arguments.of(new double[]{1, 1}, new double[]{-1, -1}),
+
+                Arguments.of(new double[]{-1.5}, new double[]{1.5}),
+                Arguments.of(new double[]{1.5}, new double[]{-1.5}),
+
+                Arguments.of(new double[]{-0.5, -1.5}, new double[]{0.5, 1.5}),
+                Arguments.of(new double[]{0.5, 1.5}, new double[]{-0.5, -1.5}),
+
+                Arguments.of(new double[]{10, 100, 1000.05, 0, -10, -100, -1000.05}, new double[]{-10, -100, -1000.05, 0, 10, 100, 1000.05}),
+
+                Arguments.of(new double[]{-1000000000, -1000000000}, new double[]{1000000000, 1000000000}),
+                Arguments.of(new double[]{1000000000, 1000000000}, new double[]{-1000000000, -1000000000})
+            );
     }
-
-    @Test
-    void arrayAdd() {
-        assertArrayEquals(new double[]{0}, MathPackage.arrayAdd(new double[]{0}, new double[]{0}));
-        assertArrayEquals(new double[]{0, 0}, MathPackage.arrayAdd(new double[]{0, 0}, new double[]{0, 0}));
-
-        assertArrayEquals(new double[]{2}, MathPackage.arrayAdd(new double[]{1}, new double[]{1}));
-        assertArrayEquals(new double[]{0}, MathPackage.arrayAdd(new double[]{1}, new double[]{-1}));
-
-        assertArrayEquals(new double[]{2, 2}, MathPackage.arrayAdd(new double[]{1, 1}, new double[]{1, 1}));
-        assertArrayEquals(new double[]{1, 1}, MathPackage.arrayAdd(new double[]{0, 0}, new double[]{1, 1}));
-        assertArrayEquals(new double[]{-1, 1}, MathPackage.arrayAdd(new double[]{-2, -2}, new double[]{1, 3}));
-    }
-
-    @Test
-    void arrayNegateNull() {
-        assertArrayEquals(new double[]{}, MathPackage.arrayNegate(new double[]{}));
-    }
-
-    @Test
-    void arrayNegate() {
-        assertArrayEquals(new double[]{0}, MathPackage.arrayNegate(new double[]{0}));
-        assertArrayEquals(new double[]{-1}, MathPackage.arrayNegate(new double[]{1}));
-
-        assertArrayEquals(new double[]{1.5}, MathPackage.arrayNegate(new double[]{-1.5}));
-        assertArrayEquals(new double[]{-1.5}, MathPackage.arrayNegate(new double[]{1.5}));
-
-        assertArrayEquals(new double[]{1.5, 2.5}, MathPackage.arrayNegate(new double[]{-1.5, -2.5}));
-        assertArrayEquals(new double[]{-1.5, -2.5}, MathPackage.arrayNegate(new double[]{1.5, 2.5}));
-
-        assertArrayEquals(new double[]{1, 1, 1, 0, -1, -1, -1}, MathPackage.arrayNegate(new double[]{-1, -1, -1, 0, 1, 1, 1}));
-        assertArrayEquals(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, MathPackage.arrayNegate(new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
-
-        assertArrayEquals(new double[]{1000000000, 1000000000}, MathPackage.arrayNegate(new double[]{-1000000000, -1000000000}));
-        assertArrayEquals(new double[]{-1000000000, -1000000000}, MathPackage.arrayNegate(new double[]{1000000000, 1000000000}));
+    @ParameterizedTest(name = "{index} => expected={0} input1={1}")
+    @MethodSource("negateProvider")
+    void arrayNegate(double[] expected, double[] input) {
+        assertArrayEquals(expected, MathPackage.arrayNegate(input));
     }
 }
