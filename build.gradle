@@ -15,9 +15,11 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.+'
+    compile 'org.pitest:pitest-juint5-plugin:0.3'
 }
 
 pitest {
+    testPlugin = 'juint5'
     threads = 4
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
@@ -26,7 +28,7 @@ pitest {
 
 sourceSets {
     test {
-        java.srcDir file('src/test/java')
+        java.srcDir file('src/main/java')
         resources.srcDir file('src/test/resources')
         compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
         runtimeClasspath += output + compileClasspath
