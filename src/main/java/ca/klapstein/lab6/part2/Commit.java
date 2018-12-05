@@ -1,3 +1,5 @@
+package ca.klapstein.lab6.part2;
+
 public class Commit {
 	
 	/**
