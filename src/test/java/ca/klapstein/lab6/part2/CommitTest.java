@@ -343,4 +343,128 @@ class CommitTest {
     void arrayNegate(double[] expected, double[] input) {
         assertArrayEquals(expected, Commit.arrayNegate(input));
     }
+
+    // TODO: /* New functionality testing for Commit is below */
+
+    // TODO:
+    private static Stream<Arguments> arraySubtractProvider() {
+        return Stream.of(
+                // NEW: only passing case
+                Arguments.of(new double[]{}, new double[]{}, new double[]{}),
+
+                // NEW: all other tests fail assert unless otherwise specified
+                Arguments.of(new double[]{0}, new double[]{}, new double[]{0}),
+                // java.lang.ArrayIndexOutOfBoundsException
+                Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
+
+                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
+                // java.lang.ArrayIndexOutOfBoundsException
+                Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
+
+                Arguments.of(new double[]{0}, new double[]{0}, new double[]{0}),
+                Arguments.of(new double[]{0, 0}, new double[]{0}, new double[]{0, 0}),
+                Arguments.of(new double[]{0, 0}, new double[]{0, 0}, new double[]{0, 0}),
+
+                Arguments.of(new double[]{-1}, new double[]{0}, new double[]{1}),
+                Arguments.of(new double[]{1}, new double[]{1}, new double[]{0}),
+
+                Arguments.of(new double[]{0, -1}, new double[]{0}, new double[]{0, 1}),
+                Arguments.of(new double[]{-1, 0}, new double[]{0}, new double[]{1, 0}),
+                Arguments.of(new double[]{-1, -1}, new double[]{0}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{0, -1}, new double[]{0, 0}, new double[]{0, 1}),
+                Arguments.of(new double[]{-1, 0}, new double[]{0, 0}, new double[]{1, 0}),
+                Arguments.of(new double[]{-1, -1}, new double[]{0, 0}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{-1, 0}, new double[]{0, 1}, new double[]{1, 1}),
+                Arguments.of(new double[]{0, -1}, new double[]{1, 0}, new double[]{1, 1}),
+                Arguments.of(new double[]{0, 0}, new double[]{1, 1}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{-1, -2}, new double[]{0, -1}, new double[]{1, 1}),
+                Arguments.of(new double[]{-2, -1}, new double[]{-1, 0}, new double[]{1, 1}),
+                Arguments.of(new double[]{-2, -2}, new double[]{-1, -1}, new double[]{1, 1}),
+
+                Arguments.of(new double[]{99, 0, -99}, new double[]{100, 10, 1}, new double[]{1,10,100}),
+                Arguments.of(new double[]{-101, -20, -101}, new double[]{-100, -10, -1}, new double[]{1,10,100}),
+
+                Arguments.of(new double[]{0}, new double[]{0.5}, new double[]{0.5})
+        );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input1={1} input2={2}")
+    @MethodSource("arraySubtractProvider")
+    public void arraySubtract(double[] expected, double[] input1, double[] input2){
+        assertArrayEquals(expected, Commit.arraySubtract(input1, input2));
+    }
+
+    // TODO:
+    private static Stream<Arguments> distanceProvider() {
+        return Stream.of(
+                // all tests expecting 0 pass all expecting non zero fail
+                Arguments.of(0, new double[]{}, new double[]{}),
+                Arguments.of(0, new double[]{}, new double[]{0}),
+                Arguments.of(0, new double[]{0}, new double[]{}),
+                Arguments.of(0, new double[]{0}, new double[]{0}),
+
+                Arguments.of(1, new double[]{0}, new double[]{1}),
+                Arguments.of(1, new double[]{1}, new double[]{0}),
+                Arguments.of(0, new double[]{1}, new double[]{1}),
+
+                Arguments.of(1, new double[]{0}, new double[]{-1}),
+                Arguments.of(1, new double[]{-1}, new double[]{0}),
+                Arguments.of(0, new double[]{-1}, new double[]{-1}),
+
+                Arguments.of(0, new double[]{0, 0}, new double[]{0, 0}),
+                Arguments.of(1, new double[]{0, 0}, new double[]{0, 1}),
+                Arguments.of(1, new double[]{0, 0}, new double[]{1, 0}),
+                Arguments.of(1, new double[]{0, 0}, new double[]{1, 1}),  // TODO
+
+                Arguments.of(1, new double[]{0, 1}, new double[]{0, 0}),
+                Arguments.of(0, new double[]{0, 1}, new double[]{0, 1}),
+                Arguments.of(1, new double[]{0, 1}, new double[]{1, 0}),  // TODO
+                Arguments.of(1, new double[]{0, 1}, new double[]{1, 1}),
+
+                Arguments.of(1, new double[]{1, 0}, new double[]{0, 0}),
+                Arguments.of(1, new double[]{1, 0}, new double[]{0, 1}), // TODO
+                Arguments.of(0, new double[]{1, 0}, new double[]{1, 0}),
+                Arguments.of(1, new double[]{1, 0}, new double[]{1, 1}),
+
+                Arguments.of(1, new double[]{1, 1}, new double[]{0, 0}), // TODO
+                Arguments.of(1, new double[]{1, 1}, new double[]{0, 1}),
+                Arguments.of(1, new double[]{1, 1}, new double[]{1, 0}),
+                Arguments.of(0, new double[]{1, 1}, new double[]{1, 1}),
+
+                Arguments.of(2, new double[]{-1, 0}, new double[]{1, 0}),
+                Arguments.of(2, new double[]{0, -1}, new double[]{0, 1}),
+                // TODO: add more cases
+
+                // unknown behavior
+                Arguments.of(0, new double[]{}, new double[]{0}),
+                Arguments.of(0, new double[]{0}, new double[]{}),
+
+                Arguments.of(1000000000, new double[]{0, 0}, new double[]{0,1000000000}),
+                Arguments.of(1000000000, new double[]{0, 0}, new double[]{1000000000, 0}),
+
+                Arguments.of(0, new double[]{0, 1000000000}, new double[]{0,1000000000})
+            );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input1={1} input2={2}")
+    @MethodSource("distanceProvider")
+    public void distance(Number expected, double[] input1, double[] input2){
+        assertEquals(expected.doubleValue(), Commit.distance(input1, input2));
+    }
+
+    // TODO:
+    private static Stream<Arguments> arrayDeviationProvider() {
+        return Stream.of(
+                // all fail
+                Arguments.of(new double[]{}, new double[]{}), // unknown
+                Arguments.of(new double[]{0}, new double[]{0}),
+                Arguments.of(new double[]{0, 0}, new double[]{0, 0})
+        );
+    }
+    @ParameterizedTest(name = "{index} => expected={0} input1={1}")
+    @MethodSource("arrayDeviationProvider")
+    public void arrayDeviation(double[] expected, double[] input){
+        assertArrayEquals(expected, Commit.arrayDeviation(input));
+    }
 }
