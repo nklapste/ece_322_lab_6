@@ -184,9 +184,10 @@ public class Commit {
 
         double[] result = new double[d1.length];
         for (int i = 0; i < d1.length; i++) {
-            result[i] = d1[i] / mean - dev;
+            result[i] = stddev(new double[]{d1[i], mean});  // fixing invalid stddev compared to mean calc
         }
-        return null;
+        // fixing invalid return
+        return result;
     }
 
 }
