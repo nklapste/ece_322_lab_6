@@ -142,6 +142,7 @@ class CommitTest {
                 Arguments.of(new double[]{1, 0}, new double[]{1, 0}),
 
                 // NEW: fail assert
+                // still fails
                 Arguments.of(new double[]{0.5, 0.5}, new double[]{1, 1}),
                 // NEW: these pass now
                 Arguments.of(new double[]{1, 0}, new double[]{0, -1}),
@@ -153,6 +154,7 @@ class CommitTest {
                 Arguments.of(new double[]{1, 0, 0.3, 0.7}, new double[]{100, -100, -40, 40}),
 
                 // NEW: fail assert
+                // assert fail
                 Arguments.of(new double[]{0.25, 0.25, 0.25, 0.25}, new double[]{1000000000, 1000000000, 1000000000, 1000000000})
         );
     }
