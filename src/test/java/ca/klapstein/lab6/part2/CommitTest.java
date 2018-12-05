@@ -262,11 +262,11 @@ class CommitTest {
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
 
                 // NEW: still fail
-                // fail java.lang.ArrayIndexOutOfBoundsException
-                Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
+                // fail assert
+                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
                 // NEW: still fail
                 // fail java.lang.ArrayIndexOutOfBoundsException
-                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
+                Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
 
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{0}),
                 // NEW: still fail

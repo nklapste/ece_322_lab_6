@@ -245,13 +245,13 @@ class MathPackageTest {
                 Arguments.of(new double[]{}, new double[]{}, new double[]{}),
                 // fail assert
                 Arguments.of(new double[]{0}, new double[]{}, new double[]{0}),
-                // fail assert
+                // fail java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{}),
 
+                // fail assert
+                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
                 // fail java.lang.ArrayIndexOutOfBoundsException
                 Arguments.of(new double[]{1}, new double[]{1}, new double[]{}),
-                // fail java.lang.ArrayIndexOutOfBoundsException
-                Arguments.of(new double[]{1}, new double[]{}, new double[]{1}),
 
                 Arguments.of(new double[]{0}, new double[]{0}, new double[]{0}),
                 // fail assert
