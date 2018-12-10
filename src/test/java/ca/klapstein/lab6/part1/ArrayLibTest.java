@@ -63,9 +63,9 @@ public class ArrayLibTest {
     @Test
     public void intersectionNull() {
         // removes nulls unknown if expected
-        assertThrows(AssertionError.class,
+        assertThrows(NullPointerException.class,
                 () -> {
-                    assertArrayEquals(new String[]{null, null}, ArrayLib.union(new String[]{null}, new String[]{null}, String.class));
+                    assertArrayEquals(new String[]{null}, ArrayLib.intersection(new String[]{null}, new String[]{null}, String.class));
                 });
     }
 
