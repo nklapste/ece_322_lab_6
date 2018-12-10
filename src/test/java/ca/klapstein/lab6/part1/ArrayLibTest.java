@@ -162,7 +162,12 @@ public class ArrayLibTest {
      */
     @Test
     public void withoutNull() {
+        // null args
+        assertArrayEquals(getExampleEmptyArray(), ArrayLib.without(getExampleEmptyArray(), String.class));
         assertArrayEquals(getExampleArray(), ArrayLib.without(getExampleArray(), String.class));
+
+        // null list
+        assertArrayEquals(getExampleEmptyArray(), ArrayLib.without(getExampleEmptyArray(), String.class, "foo"));
     }
 
     @Test
